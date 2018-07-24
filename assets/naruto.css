@@ -1,3 +1,18 @@
 .character-image {
-    max-width: 100%;
+    max-width: 5vw;
+    min-height: 100%;
+}
+
+#characters {
+    padding-left: 10vw;
+    min-height: 20vh;
+    max-height: 20vh;
+    border: solid;
+    background-color: black;
+}
+
+#info {
+    padding-top: 1vh;
+    min-height: 15vh;
+    text-align: center;
 }

@@ -8,10 +8,18 @@ $(document).ready(function(){
         start: function(){
             //clear the banner div and replace with game instructions
             info = $("#user-info");
+            info_header = $("#user-info-header");
+            info_body = $("#user-info-body");
             info.fadeOut(1500);
-            setTimeout(function(){info.empty()}, 1500);
+            setTimeout(function(){
+                info_header.empty();
+                info_body.empty();
+                }, 1500);
             info.fadeIn(3000);
-            setTimeout(function(){info.html("<p>"+gameVariables.instructions+"</p>")}, 2000);
+            setTimeout(function(){
+                info_header.text("INSTRUCTIONS");
+                info_body.text(gameVariables.instructions)
+                }, 2000);
             //show all the characters available to choose from
             gameVariables.show_characters();
         },
