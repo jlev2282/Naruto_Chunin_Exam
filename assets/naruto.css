@@ -36,3 +36,9 @@ body {
     max-height: 60vh;
 }
 
+.player-info {
+    margin-top: 10px;
+    width: 20vw;
+    height: 100%;
+}
+
