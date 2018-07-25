@@ -1,6 +1,8 @@
 $(document).ready(function(){
     var gameVariables = {
         gameStarted: false,
+        character: null,
+        opponents: [],
         instructions : "There are four rounds to the Chunin exam. In each round you will have to defeat your opponent by" +
                        " using your attack skills to reduce their health points to zero, but be careful. Each time you attack," +
                        " your opponent will attack in return, reducing your health points by the level of their attack. Choose" +
@@ -144,7 +146,28 @@ $(document).ready(function(){
     });
 
     //onclick that picks character and moves them to
-
+    $(document).on("click", ".character-image", function(){
+        if(gameVariables.gameStarted == false) {
+            selected = $(this).clone();
+            $(this).css("border", "solid");
+            $(this).css("border-color", "yellow");
+            //change game state to true for started
+            gameVariables.gameStarted = true;
+            //assign chosen character to character variable
+            gameVariables.character = this.dataset.name;
+            //assign remaining characters to opponents by pushing into opponents array
+            for(i=0;i<gameVariables.characters.length; i++){
+                if(gameVariables.character != gameVariables.characters.name){
+                    gameVariables.opponents.push(gameVariables.characters.name);
+                }
+            }
+            //clear arena of any info from mouseovers
+            $("#character").empty();
+            $("#opponent").empty();
+            //grab selected character and append to character div
+            $("#character").html(selected);
+        }
+    });
 
 
 });
