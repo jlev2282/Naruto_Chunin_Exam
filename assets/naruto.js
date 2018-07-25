@@ -3,6 +3,8 @@ $(document).ready(function(){
         gameStarted: false,
         character: null,
         opponents: [],
+        opponent: null,
+        round: 1,
         instructions : "There are four rounds to the Chunin exam. In each round you will have to defeat your opponent by" +
                        " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
                        " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
@@ -46,7 +48,7 @@ $(document).ready(function(){
                 }
             }, 500);
         },
-        hint: "Maybe start with a weaker opponent and hone your attack ability on them before moving on to stronger foes?",
+        hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
         characters: [
              {
                 name: "Naruto Uzamaki",
@@ -113,7 +115,8 @@ $(document).ready(function(){
                 }
             }
             return character;
-        }
+        },
+        selectOpponent: function(){alert("Add code for me!")}
         };
 
 
@@ -182,6 +185,11 @@ $(document).ready(function(){
             $("#opponent").empty();
             //grab selected character and append to character div
             $("#character").html(selected);
+
+            //create element to display chakra, attack points, and counter attack points
+            //append element to character div to left of character
+            //prompt user to select opponent
+            gameVariables.selectOpponent();
         }
     });
 
