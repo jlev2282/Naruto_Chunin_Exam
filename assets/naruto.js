@@ -127,23 +127,28 @@ $(document).ready(function(){
         if(gameVariables.gameStarted == false) {
             currentCharacter = this.dataset.name;
             character = gameVariables.getCharacter(currentCharacter);
-            image = "<img class='arena-pic' style='max-height: 100%; margin-top: 10px; border-radius: 10px;' src='"+character.win_pic+"'>";
-            console.log(image);
+            // image = "<img class='arena-pic' style='max-height: 100%; margin-top: 10px; border-radius: 10px;' src='"+character.win_pic+"'>";
 
-            traitList = "<ul id='trait-list'><li>"+character.chakra+"</li></ul>";
-            traitList = "<div class='card player-info'><div class='card-header' style='text-align: center;'>"+character.name+"</div><div class='card-body'><blockquote class='blockquote mb-0'>"+
-                "<ul><li>Chakra: "+character.chakra+"</li><li>Attack: "+character.attack_power+"</li><li>Counter Attack: "+character.counter_attack_power+"</ul>"+
-                "<footer  style='text-align: center;'>"+character.saying+"</footer></blockquote></div></div>";
-            $("#character").append(image);
-            $("#opponent").append(traitList);
+            // traitList = "<ul id='trait-list'><li>"+character.chakra+"</li></ul>";
+            // traitList = "<div class='card player-info'><div class='card-header' style='text-align: center;'>"+character.name+"</div><div class='card-body'><blockquote class='blockquote mb-0'>"+
+            //     "<ul><li>Chakra: "+character.chakra+"</li><li>Attack: "+character.attack_power+"</li><li>Counter Attack: "+character.counter_attack_power+"</ul>"+
+            //     "<footer  style='text-align: center;'>"+character.saying+"</footer></blockquote></div></div>";
+
+            html = "<div class='card text-center' style='width: 18rem;'><img class='card-img-top' style='height: 35vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
+                    "<div class='card-header'><h5 class='card-title'>"+character.name+"</h5></div>"+
+                    "<div class='card-body><p class='card-text'>\""+character.saying+"\"</p></div><ul class='list-group list-group-flush'>"+
+                    "<li class='list-group-item'>Chakra: "+character.chakra+"</li><li class='list-group-item'>Attack: "+character.attack_power+"</li>"+
+                    "<li class='list-group-item'>Counter Attack: "+character.counter_attack_power+"</li></ul></div>";
+
+            $("#actions").append(html);
+            // $("#opponent").append(traitList);
         }
     });
 
     //will empty arena of character info after mouseout
     $(document).on("mouseout", ".character-image", function(){
         if(gameVariables.gameStarted == false) {
-            $("#character").empty();
-            $("#opponent").empty();
+            $("#actions").empty();
 
         }
     });
@@ -189,7 +194,7 @@ $(document).ready(function(){
             //create element to display chakra, attack points, and counter attack points
 
             //append element to character div to left of character
-            
+
             //prompt user to select opponent
             gameVariables.selectOpponent();
         }
