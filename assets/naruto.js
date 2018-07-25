@@ -5,6 +5,7 @@ $(document).ready(function(){
         opponents: [],
         opponent: null,
         round: 1,
+        ready2fight: false,
         instructions : "There are four rounds to the Chunin exam. In each round you will have to defeat your opponent by" +
                        " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
                        " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
@@ -133,6 +134,7 @@ $(document).ready(function(){
                 $("#user-info-header").text(character.toUpperCase());
                 $("#user-info-body").html(html);
             }, 2000);
+            gameVariables.ready2fight = true;
         }
     };
 
@@ -142,9 +144,10 @@ $(document).ready(function(){
 
     //will populate the arena with data on currently moused over character if game has not yet started
     $(document).on("mouseover", ".character-image", function(){
+        currentCharacter = this.dataset.name;
+        character = gameVariables.getCharacter(currentCharacter);
+
         if(gameVariables.gameStarted == false) {
-            currentCharacter = this.dataset.name;
-            character = gameVariables.getCharacter(currentCharacter);
 
             html = "<div class='card text-center' style='width: 18rem; max-height: 100%;'><img class='card-img-top' style='height: 22vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
                     "<div class='card-header' style='max-height: 7vh;'><h5 class='card-title'>"+character.name+"</h5></div>"+
@@ -155,12 +158,38 @@ $(document).ready(function(){
             $("#actions").append(html);
             // $("#opponent").append(traitList);
         }
+
+        if(gameVariables.ready2fight == true) {
+            if( currentCharacter == gameVariables.character){
+                $(this).css("border", "solid");
+                $(this).css("border-color", "red");
+            } else if (currentCharacter == gameVariables.character && gamevariables.opponent != null) {
+                return false;
+            } else {
+                $(this).css("border", "solid");
+                $(this).css("border-color", "blue");
+            }
+
+        }
     });
 
     //will empty arena of character info after mouseout
     $(document).on("mouseout", ".character-image", function(){
-        if(gameVariables.gameStarted == false) {
+        if(gameVariables.gameStarted == false && gameVariables.ready2fight == false) {
             $("#actions").empty();
+
+        }
+
+        if(gameVariables.ready2fight == true) {
+            if( currentCharacter == gameVariables.character){
+                $(this).css("border", "solid");
+                $(this).css("border-color", "yellow");
+            } else if (currentCharacter == gameVariables.opponent || currentCharacter == gameVariables.character){
+                return false;
+            } else {
+                $(this).css("border", "solid");
+                $(this).css("border-color", "");
+            }
 
         }
     });
@@ -185,7 +214,7 @@ $(document).ready(function(){
             selected = $(this).clone();
             selected.attr("src", selectedInfo.combat_pic);
             selected.removeClass("character-image");
-            selected.addClass("character");
+            selected.addClass("fighter");
             selected.css("max-height", "100%");
 
 
@@ -210,6 +239,36 @@ $(document).ready(function(){
 
             //prompt user to select opponent
             gameVariables.selectOpponent(gameVariables.character);
+        }
+
+        //for when character is chosen and now it's time to pick an opponent
+        if(gameVariables.ready2fight == true) {
+            if( currentCharacter == gameVariables.character){
+                return false;
+            } else {
+                if(gameVariables.opponent == null){
+                    gameVariables.opponent = this.dataset.name;
+
+                    //get info for selected character and assign to "selected"
+                    selectedInfo = gameVariables.getCharacter(this.dataset.name);
+
+                    //indicate character has been selected
+                    $(this).css("border", "solid");
+                    $(this).css("border-color", "blue");
+
+                    //make copy of chosen character and highlight the selection
+                    selected = $(this).clone();
+                    selected.attr("src", selectedInfo.combat_pic);
+                    selected.removeClass("character-image");
+                    selected.addClass("fighter");
+                    selected.css("max-height", "100%");
+
+                    //grab selected character and append to character div
+                    $("#opponent").html(selected);
+                }
+                
+            }
+
         }
     });
 
