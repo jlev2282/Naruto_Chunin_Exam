@@ -116,12 +116,27 @@ $(document).ready(function(){
             }
             return character;
         },
-        selectOpponent: function(){
-            html = "<h3>SELECT YOUR OPPONENT FOR ROUND "+gameVariables.round+"!";
-            $("#actions").html(html);
+        selectOpponent: function(character){
+            html = "<h2>SELECT YOUR OPPONENT FOR ROUND "+gameVariables.round+"!</h2>";
+            
+            $("#user-info-body").fadeOut(1500);
+            //empty the banner completely after 1.5 seconds
+            setTimeout(function(){
+                $("#user-info-header").empty();
+                $("#user-info-body").empty();
+            }, 1500);
+
+            $("#user-info-body").fadeIn(2500);
+            $("#user-info-header").fadeIn(2500);
+
+            setTimeout(function(){
+                $("#user-info-header").text(character.toUpperCase());
+                $("#user-info-body").html(html);
+            }, 2000);
         }
     };
 
+    //start of events outside of gameVariables 
 
     $("#start").on("click", gameVariables.start);
 
@@ -131,8 +146,8 @@ $(document).ready(function(){
             currentCharacter = this.dataset.name;
             character = gameVariables.getCharacter(currentCharacter);
 
-            html = "<div class='card text-center' style='width: 18rem;'><img class='card-img-top' style='height: 23vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
-                    "<div class='card-header'><h5 class='card-title'>"+character.name+"</h5></div>"+
+            html = "<div class='card text-center' style='width: 18rem; max-height: 100%;'><img class='card-img-top' style='height: 22vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
+                    "<div class='card-header' style='max-height: 7vh;'><h5 class='card-title'>"+character.name+"</h5></div>"+
                     "<div class='card-body><p class='card-text'>Favorite Saying: \""+character.saying+"\"</p></div><ul class='list-group list-group-flush'>"+
                     "<li class='list-group-item'>Chakra: "+character.chakra+"</li><li class='list-group-item'>Attack: "+character.attack_power+"</li>"+
                     "<li class='list-group-item'>Counter Attack: "+character.counter_attack_power+"</li></ul></div>";
@@ -157,7 +172,7 @@ $(document).ready(function(){
             gameVariables.gameStarted = true;
 
             //change background to arena field 
-            // $("body").css('background-image', 'url(images/itachi_solo.jpg)');
+            // $("body").css('background-image', 'url(images/arena_field_grass.jpg)');
 
             //get info for selected character and assign to "selected"
             selectedInfo = gameVariables.getCharacter(this.dataset.name);
@@ -184,9 +199,8 @@ $(document).ready(function(){
                 }
             }
             //clear arena of any info from mouseovers
-            $("#character").empty();
             $("#character").css("text-align", "center");
-            $("#opponent").empty();
+            $("#actions").empty();
             //grab selected character and append to character div
             $("#character").html(selected);
 
@@ -195,7 +209,7 @@ $(document).ready(function(){
             //append element to character div to left of character
 
             //prompt user to select opponent
-            gameVariables.selectOpponent();
+            gameVariables.selectOpponent(gameVariables.character);
         }
     });
 
