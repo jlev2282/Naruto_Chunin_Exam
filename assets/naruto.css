@@ -13,6 +13,11 @@
 
 #info {
     padding-top: 1vh;
-    min-height: 17vh;
+    min-height: 24vh;
+    max-height: 24vh;
     text-align: center;
+    background-image: url(images/team7.jpg);
+    background-size: 24%;
+    background-repeat: no-repeat;
 }
+

@@ -1,5 +1,6 @@
 $(document).ready(function(){
     var gameVariables = {
+        gameStarted: false,
         instructions : "There are four rounds to the Chunin exam. In each round you will have to defeat your opponent by" +
                        " using your attack skills to reduce their health points to zero, but be careful. Each time you attack," +
                        " your opponent will attack in return, reducing your health points by the level of their attack. Choose" +
@@ -34,19 +35,97 @@ $(document).ready(function(){
             $("#characters").fadeOut("fast");
             $("#characters").css("background-color", "black");
             $("#characters").fadeIn(2500);
-            character_array = gameVariables.characters;
-            for(i=0;i<character_array.length;i++){
-                html = "<div class='col-md'><img src='"+character_array[i]+"' class='character-image'></div>";
+            character_object = gameVariables.characters;
+            for(i=0;i<character_object.length;i++){
+                html = "<div class='col-md'><img src='"+character_object[i].profile_pic+"' class='character-image' data-name='"+
+                character_object[i].name+"'></div>";
                 $("#characters").append(html);
             }
         },
         hint: "Maybe start with a weaker opponent and hone your attack ability on them before moving on to stronger foes?",
-        characters: ["assets/images/naruto_ready.jpeg","assets/images/sakura_ready.jpeg","assets/images/sasuke_ready.jpeg","assets/images/shikamaru_ready.png","assets/images/neji_ready.jpg"],
+        characters: [
+             {
+                name: "Naruto Uzamaki",
+                profile_pic: "assets/images/naruto_ready.jpeg",
+                combat_pic: "assets/images/naruto_combat.jpg",
+                chakra: 99,
+                attack_power: 75,
+                counter_attack_power:75,
+                win_pic: "assets/images/naruto_win.jpg",
+                // lose_pic:
+                saying: "One day I WILL be the Hokage!",
+            },
+            {
+                name: "Sakura Haruno",
+                profile_pic: "assets/images/sakura_ready.jpeg",
+                combat_pic: "assets/images/sakura_combat2.jpg",
+                chakra: 75,
+                attack_power: 90,
+                counter_attack_power: 80,
+                win_pic: "assets/images/sakura_win.jpg",
+                // lose_pic:
+                saying: "CHA!!!",
+            },
+            {
+                name: "Sasuke Uchiha",
+                profile_pic: "assets/images/sasuke_ready.jpeg",
+                combat_pic: "assets/images/sasuke_profile.jpg",
+                chakra: 80,
+                attack_power: 80,
+                counter_attack_power: 80,
+                win_pic: "assets/images/sasuke_win.jpg",
+                // lose_pic:
+                saying: "I'll never acknowledge you.",
+            },
+            {
+                name: "Shikamaru Nara",
+                profile_pic: "assets/images/shikamaru_ready.png",
+                combat_pic: "assets/images/shikamaru_combat.jpg",
+                chakra: 70,
+                attack_power: 75,
+                counter_attack_power: 90,
+                win_pic: "assets/images/shikamaru_win.jpg",
+                // lose_pic:
+                saying: "What a drag..",
+            },
+             {
+                name: "Neji Hyuga",
+                profile_pic: "assets/images/neji_ready.jpg",
+                combat_pic: "assets/images/neji_combat.jpg",
+                chakra:75,
+                attack_power: 80,
+                counter_attack_power: 85,
+                win_pic: "assets/images/neji_ready.jpg",
+                // lose_pic:
+                saying: "I have no choice but to fulfill my destiny.",
+             }
+        ],
+        getCharacter: function(value){
+            character= "boo";
+            for(i=0; i<gameVariables.characters.length; i++){
+                if(value == gameVariables.characters[i].name){
+                    character = gameVariables.characters[i];
+                }
+            }
+            return character;
+        }
+        };
 
-
-    };
 
     $("#start").on("click", gameVariables.start);
 
+    $(document).on("mouseover", ".character-image", function(){
+        if(gameVariables.gameStarted == false) {
+            currentCharacter = this.dataset.name;
+            character = gameVariables.getCharacter(currentCharacter);
+            console.log(character);
+            $("#arena").html(
+                character
+            );
+        }
+    });
+
 
 });
+
+
