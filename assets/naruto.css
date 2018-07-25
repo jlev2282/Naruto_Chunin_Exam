@@ -7,8 +7,8 @@
     padding-left: 10vw;
     min-height: 20vh;
     max-height: 20vh;
-    border: solid;
-    background-color: black;
+    border-top: solid;
+
 }
 
 #info {
@@ -16,17 +16,17 @@
     min-height: 24vh;
     max-height: 24vh;
     text-align: center;
-    background-image: url(images/waterfall.jpg);
+    background-color: white;
+    /* background-image: url(images/waterfall.jpg);
     background-size: 100%;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
 }
 
-#arena {
+body {
     background-image: url(images/arena.png);
     background-size: 100%;
     min-height: 55vh;
     max-height: 55vh;
-    border: solid;
     background-repeat: no-repeat;
 
 }
