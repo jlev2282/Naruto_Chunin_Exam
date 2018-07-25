@@ -42,3 +42,13 @@ body {
     height: 100%;
 }
 
+#character {
+    min-height: 49vh;
+}
+
+.character {
+    border-radius: 10px;
+    margin-top: 10%;
+    height: 80%;
+}
+

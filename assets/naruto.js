@@ -4,9 +4,9 @@ $(document).ready(function(){
         character: null,
         opponents: [],
         instructions : "There are four rounds to the Chunin exam. In each round you will have to defeat your opponent by" +
-                       " using your attack skills to reduce their health points to zero, but be careful. Each time you attack," +
-                       " your opponent will attack in return, reducing your health points by the level of their attack. Choose" +
-                       " your opponents wisely because your health point will not regenerate. With each attack, your confidence and" +
+                       " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
+                       " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
+                       " your opponents wisely because your chakra will not regenerate. With each attack, your confidence and" +
                        " ability will grow making each subsequent attack stronger than the previous one.",
         start: function(){
             //clear the banner div and replace with game instructions
@@ -151,10 +151,20 @@ $(document).ready(function(){
             //change game state to true for started
             gameVariables.gameStarted = true;
 
-            //make copy of chosen character and highlight the selection
-            selected = $(this).clone();
+            //get info for selected character and assign to "selected"
+            selectedInfo = gameVariables.getCharacter(this.dataset.name);
+
+            //indicate character has been selected
             $(this).css("border", "solid");
             $(this).css("border-color", "yellow");
+
+            //make copy of chosen character and highlight the selection
+            selected = $(this).clone();
+            selected.attr("src", selectedInfo.combat_pic);
+            selected.removeClass("character-image");
+            selected.addClass("character");
+            selected.css("max-height", "100%");
+
 
             //assign chosen character to character variable
             gameVariables.character = this.dataset.name;
