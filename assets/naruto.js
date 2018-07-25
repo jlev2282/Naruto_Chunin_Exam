@@ -31,16 +31,18 @@ $(document).ready(function(){
         show_characters: function(){
             //supposed to flash gold on background of character div then fade and switch back to black as it comes
             //back in to focus but the flash part isn't working yet
-            $("#characters").css("background-color", "yellow");
+            // $("#characters").css("background-color", "yellow");
             $("#characters").fadeOut("fast");
-            $("#characters").css("background-color", "black");
             $("#characters").fadeIn(2500);
-            character_object = gameVariables.characters;
-            for(i=0;i<character_object.length;i++){
-                html = "<div class='col-md'><img src='"+character_object[i].profile_pic+"' class='character-image' data-name='"+
-                character_object[i].name+"'></div>";
-                $("#characters").append(html);
-            }
+            setTimeout(function(){
+                $("#characters").css("background-color", "black");
+                character_object = gameVariables.characters;
+                for(i=0;i<character_object.length;i++){
+                    html = "<div class='col-md'><img src='"+character_object[i].profile_pic+"' class='character-image' data-name='"+
+                        character_object[i].name+"'></div>";
+                    $("#characters").append(html);
+                }
+            }, 500);
         },
         hint: "Maybe start with a weaker opponent and hone your attack ability on them before moving on to stronger foes?",
         characters: [
@@ -140,6 +142,8 @@ $(document).ready(function(){
 
         }
     });
+
+    //onclick that picks character and moves them to
 
 
 
