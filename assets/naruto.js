@@ -131,9 +131,9 @@ $(document).ready(function(){
             currentCharacter = this.dataset.name;
             character = gameVariables.getCharacter(currentCharacter);
 
-            html = "<div class='card text-center' style='width: 18rem;'><img class='card-img-top' style='height: 30vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
+            html = "<div class='card text-center' style='width: 18rem;'><img class='card-img-top' style='height: 23vh;' src='"+character.win_pic+"' alt='"+currentCharacter+"'>"+
                     "<div class='card-header'><h5 class='card-title'>"+character.name+"</h5></div>"+
-                    "<div class='card-body><p class='card-text'>\""+character.saying+"\"</p></div><ul class='list-group list-group-flush'>"+
+                    "<div class='card-body><p class='card-text'>Favorite Saying: \""+character.saying+"\"</p></div><ul class='list-group list-group-flush'>"+
                     "<li class='list-group-item'>Chakra: "+character.chakra+"</li><li class='list-group-item'>Attack: "+character.attack_power+"</li>"+
                     "<li class='list-group-item'>Counter Attack: "+character.counter_attack_power+"</li></ul></div>";
 
@@ -155,6 +155,9 @@ $(document).ready(function(){
         if(gameVariables.gameStarted == false) {
             //change game state to true for started
             gameVariables.gameStarted = true;
+
+            //change background to arena field 
+            // $("body").css('background-image', 'url(images/itachi_solo.jpg)');
 
             //get info for selected character and assign to "selected"
             selectedInfo = gameVariables.getCharacter(this.dataset.name);
@@ -180,7 +183,6 @@ $(document).ready(function(){
                     gameVariables.opponents.push(gameVariables.characters[i].name);
                 }
             }
-            console.log(gameVariables.opponents);
             //clear arena of any info from mouseovers
             $("#character").empty();
             $("#character").css("text-align", "center");
