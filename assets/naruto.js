@@ -148,7 +148,7 @@ $(document).ready(function(){
         }
     });
 
-    //onclick that picks character and moves them to
+    //onclick that picks character and moves them to arena
     $(document).on("click", ".character-image", function(){
         if(gameVariables.gameStarted == false) {
             //change game state to true for started
@@ -187,7 +187,9 @@ $(document).ready(function(){
             $("#character").html(selected);
 
             //create element to display chakra, attack points, and counter attack points
+
             //append element to character div to left of character
+            
             //prompt user to select opponent
             gameVariables.selectOpponent();
         }
