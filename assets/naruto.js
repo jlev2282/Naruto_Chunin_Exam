@@ -100,6 +100,7 @@ $(document).ready(function(){
                 saying: "I have no choice but to fulfill my destiny.",
              }
         ],
+        //use this function to find data on a particular character by "data-name"
         getCharacter: function(value){
             character= "boo";
             for(i=0; i<gameVariables.characters.length; i++){
@@ -114,16 +115,29 @@ $(document).ready(function(){
 
     $("#start").on("click", gameVariables.start);
 
+    //will populate the arena with data on currently moused over character if game has not yet started
     $(document).on("mouseover", ".character-image", function(){
         if(gameVariables.gameStarted == false) {
             currentCharacter = this.dataset.name;
             character = gameVariables.getCharacter(currentCharacter);
-            console.log(character);
-            $("#arena").html(
-                character
-            );
+            image = "<img class='arena-pic' style='max-height: 100%; margin-top: 10px; border-radius: 5px;' src='"+character.win_pic+"'>";
+            console.log(image);
+
+            traitList = "<ul id='trait-list'><li>"+character.chakra+"</li></ul>";
+            $("#character").append(image);
+            $("#opponent").append(traitList);
         }
     });
+
+    //will empty arena of character info after mouseout
+    $(document).on("mouseout", ".character-image", function(){
+        if(gameVariables.gameStarted == false) {
+            $("#character").empty();
+            $("#opponent").empty();
+
+        }
+    });
+
 
 
 });

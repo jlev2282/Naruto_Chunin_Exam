@@ -16,8 +16,23 @@
     min-height: 24vh;
     max-height: 24vh;
     text-align: center;
-    background-image: url(images/team7.jpg);
-    background-size: 24%;
+    background-image: url(images/waterfall.jpg);
+    background-size: 100%;
     background-repeat: no-repeat;
+}
+
+#arena {
+    background-image: url(images/arena.png);
+    background-size: 100%;
+    min-height: 55vh;
+    max-height: 55vh;
+    border: solid;
+    background-repeat: no-repeat;
+
+}
+
+.arena.pic {
+    margin-top: 10px;
+    max-height: 60vh;
 }
 
