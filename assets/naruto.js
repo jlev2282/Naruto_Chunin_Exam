@@ -148,21 +148,27 @@ $(document).ready(function(){
     //onclick that picks character and moves them to
     $(document).on("click", ".character-image", function(){
         if(gameVariables.gameStarted == false) {
+            //change game state to true for started
+            gameVariables.gameStarted = true;
+
+            //make copy of chosen character and highlight the selection
             selected = $(this).clone();
             $(this).css("border", "solid");
             $(this).css("border-color", "yellow");
-            //change game state to true for started
-            gameVariables.gameStarted = true;
+
             //assign chosen character to character variable
             gameVariables.character = this.dataset.name;
+
             //assign remaining characters to opponents by pushing into opponents array
             for(i=0;i<gameVariables.characters.length; i++){
-                if(gameVariables.character != gameVariables.characters.name){
-                    gameVariables.opponents.push(gameVariables.characters.name);
+                if(gameVariables.character != gameVariables.characters[i].name){
+                    gameVariables.opponents.push(gameVariables.characters[i].name);
                 }
             }
+            console.log(gameVariables.opponents);
             //clear arena of any info from mouseovers
             $("#character").empty();
+            $("#character").css("text-align", "center");
             $("#opponent").empty();
             //grab selected character and append to character div
             $("#character").html(selected);
