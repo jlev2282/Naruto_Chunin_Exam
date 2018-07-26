@@ -1,21 +1,6 @@
 $(document).ready(function(){
     var gameVariables = {
-        gameStarted: false,
         character: null,
-        characterStats: null,
-        opponentStats: null,
-        opponents: [],
-        opponent: null,
-        round: 1,
-        ready2fight: false,
-        stats : ["chakra", "attack_power", "counter_attack_power"],
-        instructions : "This year's Chunin exams are hosted by the Village Hidden in the Leaves. There are four rounds to the exam. In each round you will have to defeat your opponent by" +
-                       " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
-                       " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
-                       " your opponents wisely because your chakra will not regenerate. With each attack, your confidence and" +
-                       " ability will grow making each subsequent attack stronger than the previous one. Mouse over each character to learn their strengths"+
-                       " and when ready, click your choice to begin.",
-        hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
         characters: [
             {
                 name: "Naruto Uzamaki",
@@ -73,6 +58,22 @@ $(document).ready(function(){
                 saying: "I have no choice but to fulfill my destiny.",
             }
         ],
+        characterStats: null,
+        gameStarted: false,
+        fighting: false,
+        opponent: null,
+        opponents: [],
+        opponentStats: null,
+        ready2fight: false,
+        round: 1,
+        stats : ["chakra", "attack_power", "counter_attack_power"],
+        instructions : "This year's Chunin exams are hosted by the Village Hidden in the Leaves. There are four rounds to the exam. In each round you will have to defeat your opponent by" +
+                       " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
+                       " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
+                       " your opponents wisely because your chakra will not regenerate. With each attack, your confidence and" +
+                       " ability will grow making each subsequent attack stronger than the previous one. Mouse over each character to learn their strengths"+
+                       " and when ready, click your choice to begin.",
+        hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
         fadeOutInInfo: function(header, body){
             //use to quickly do a fadeOut/FadeIn of banner with info change
             //make sure to pass header and body in a way that are usable by the .text()
@@ -102,25 +103,28 @@ $(document).ready(function(){
             return character;
         },
         judgeRound: function(){
+            gameVariables.fighting = true;
             myFighter = gameVariables.getCharacter(gameVariables.character);
             myOpponent= gameVariables.getCharacter(gameVariables.opponent);
+            gameVariables.characterStats = myFighter;
+            gameVariables.opponentStats = myOpponent;
 
             //get the fighting statistics of each player
             if(gameVariables.round == 1){
 
-                fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
-                fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
-                $('#actions').append(fightPanel2, fightPanel);
-                for(i=0;i<gameVariables.stats.length;i++){
-                    mystat = myFighter[gameVariables.stats[i]];
-                    html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
-                    $('#characterStats').append(html1);
-
-                    opponentstat = myOpponent[gameVariables.stats[i]];
-                    html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
-                    $('#opponentStats').append(html2);
-
-                }
+                // fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
+                // fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
+                // $('#actions').append(fightPanel2, fightPanel);
+                // for(i=0;i<gameVariables.stats.length;i++){
+                //     mystat = myFighter[gameVariables.stats[i]];
+                //     html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
+                //     $('#characterStats').append(html1);
+                //
+                //     opponentstat = myOpponent[gameVariables.stats[i]];
+                //     html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
+                //     $('#opponentStats').append(html2);
+                // }
+                gameVariables.updateGameStats(myFighter, myOpponent);
 
             }
             //assign those to variables for this round only
@@ -210,6 +214,20 @@ $(document).ready(function(){
             gameVariables.judgeRound();
 
         },
+        updateGameStats: function(myFighter, myOpponent){
+            fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
+            fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
+            $('#actions').append(fightPanel2, fightPanel);
+            for(i=0;i<gameVariables.stats.length;i++) {
+                mystat = myFighter[gameVariables.stats[i]];
+                html1 = "<p style='background: white; margin-top: 5px;'>" + gameVariables.stats[i] + ": " + mystat + "</p><br>";
+                $('#characterStats').append(html1);
+
+                opponentstat = myOpponent[gameVariables.stats[i]];
+                html2 = "<p style='background: white; margin-top: 5px;'>" + gameVariables.stats[i] + ": " + opponentstat + "</p><br>";
+                $('#opponentStats').append(html2);
+            }
+        }
     };
 
     //start of events outside of gameVariables 
@@ -343,9 +361,21 @@ $(document).ready(function(){
                 
             }
 
+            if(gameVariables.fighting == true) {
+                return false;
+            }
+
             //call to start the round
             gameVariables.startRound();
 
+        }
+    });
+
+    $(document).on("click", "#attack", function(){
+        characterHealth = gameVariables.characterStats.chakra;
+        opponentHealth = gameVariables.opponentStats.chakra;
+        if(opponentHealth > 0){
+            alert("I've hit you!");
         }
     });
 
