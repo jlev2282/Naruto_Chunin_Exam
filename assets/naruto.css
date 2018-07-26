@@ -7,7 +7,7 @@
     padding-left: 10vw;
     min-height: 20vh;
     max-height: 20vh;
-    border-top: solid;
+    /* border-top: solid; */
 
 }
 
@@ -16,10 +16,20 @@
     min-height: 22vh;
     max-height: 22vh;
     text-align: center;
-    background-color: white;
+    border-bottom: solid;
+    border-bottom-color: black;
+    /* background-color: white; */
     /* background-image: url(images/waterfall.jpg);
     background-size: 100%;
     background-repeat: no-repeat; */
+}
+
+#user-info-header {
+    background: rgba(183, 197, 183, 0.7);
+}
+
+#user-info-body {
+    background: rgba(183, 197, 183, 0.7);
 }
 
 body {
@@ -44,11 +54,32 @@ body {
 
 #character {
     min-height: 49vh;
+    border: solid;
+}
+
+#opponent {
+    min-height: 49vh;
+    border: solid;
+
 }
 
 .fighter {
     border-radius: 10px;
     margin-top: 10%;
     height: 80%;
+}
+
+#actions {
+    max-height: 100%;
+}
+
+.card-styling {
+    max-height: 7vh;
+}
+
+#stats {
+    margin-top: 10vh;
+    border: solid;
+    min-height: 30vh;
 }
 
