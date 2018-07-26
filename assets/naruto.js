@@ -2,10 +2,13 @@ $(document).ready(function(){
     var gameVariables = {
         gameStarted: false,
         character: null,
+        characterStats: null,
+        opponentStats: null,
         opponents: [],
         opponent: null,
         round: 1,
         ready2fight: false,
+        stats : ["chakra", "attack_power", "counter_attack_power"],
         instructions : "This year's Chunin exams are hosted by the Village Hidden in the Leaves. There are four rounds to the exam. In each round you will have to defeat your opponent by" +
                        " using your attack skills to reduce their chakra(life force) to zero, but be careful. Each time you attack," +
                        " your opponent will attack in return, reducing your chakra by the level of their attack. Choose" +
@@ -162,20 +165,30 @@ $(document).ready(function(){
 
         },
         judgeRound: function(){
-            setTimeout(function(){
+            myFighter = gameVariables.getCharacter(gameVariables.character);
+            myOpponent= gameVariables.getCharacter(gameVariables.opponent);
+    
                 //get the fighting statistics of each player
                 if(gameVariables.round == 1){
-                    myFighter = gameVariables.getCharacter(gameVariables.character);
-                    myOpponent = gameVariables.getCharacter(gameVariables.opponent);
+                    
                     fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
-                    fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats></div><div class='col' id='opponentStats></div></div>";
+                    fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
                     $('#actions').append(fightPanel2, fightPanel);
+                    for(i=0;i<gameVariables.stats.length;i++){
+                        mystat = myFighter[gameVariables.stats[i]];
+                        html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
+                        $('#characterStats').append(html1);
+
+                        opponentstat = myOpponent[gameVariables.stats[i]];
+                        html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
+                        $('#opponentStats').append(html2);
+
+                    }
                     
                 }
                 //assign those to variables for this round only
                 //create 2 small divs with a button to attack, and the 3 statistics for each fighter
                 //append those divs to #character and #opponent
-            }, 1000);
         }
     };
 
