@@ -122,6 +122,12 @@ $(document).ready(function(){
                 //update banner with round number and versus info
             }
         },
+        isAnOpponent: function(character){
+            location = gameVariables.opponents.indexOf(character);
+            if( location >= 0) {
+                return true;
+            }
+        },
         getCharacter: function(value){
             //use this function to find data on a particular character by "data-name"
             character= "boo";
@@ -256,6 +262,7 @@ $(document).ready(function(){
     $(document).on("mouseover", ".character-image", function(){
         currentCharacter = this.dataset.name;
         character = gameVariables.getCharacter(currentCharacter);
+        // found = gameVariables.isAnOpponent(currentCharacter);
 
         if(gameVariables.gameStarted == false) {
 
@@ -269,15 +276,17 @@ $(document).ready(function(){
             // $("#opponent").append(traitList);
         }
 
-        if(gameVariables.ready2fight == true) {
+        if(gameVariables.ready2fight === true) {
             if( currentCharacter == gameVariables.character){
                 $(this).css("border", "solid");
                 $(this).css("border-color", "red");
-            } else if (currentCharacter == gameVariables.character && gamevariables.opponent != null) {
+            } else if (gameVariables.opponent != null && currentCharacter != gameVariables.character) {
                 return false;
-            } else {
+            } else if (currentCharacter != gameVariables.character && gameVariables.opponent == null){
                 $(this).css("border", "solid");
                 $(this).css("border-color", "blue");
+            } else {
+                return false;
             }
 
         }
