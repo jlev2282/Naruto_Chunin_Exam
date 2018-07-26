@@ -112,6 +112,14 @@ $(document).ready(function(){
         endRound: function(){
             if(gameVariables.round < 4){
                 gameVariables.round++;
+                //clear actions and opponents div
+
+                //remove opponent from opponents array
+
+                //figure out logic to allow next opponent to be clicked and entered into opponent div
+                //remember you have the selectOpponent function defined below
+
+                //update banner with round number and versus info
             }
         },
         getCharacter: function(value){
@@ -132,20 +140,8 @@ $(document).ready(function(){
             gameVariables.opponentStats = myOpponent;
 
             //get the fighting statistics of each player
-            if(gameVariables.round == 1){
+            if(gameVariables.round === 1){
 
-                // fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
-                // fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
-                // $('#actions').append(fightPanel2, fightPanel);
-                // for(i=0;i<gameVariables.stats.length;i++){
-                //     mystat = myFighter[gameVariables.stats[i]];
-                //     html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
-                //     $('#characterStats').append(html1);
-                //
-                //     opponentstat = myOpponent[gameVariables.stats[i]];
-                //     html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
-                //     $('#opponentStats').append(html2);
-                // }
                 gameVariables.updateGameStats(myFighter, myOpponent);
 
             }
@@ -401,6 +397,7 @@ $(document).ready(function(){
 
         //check to make sure opponent has not died, and if not, calculate new stats and evaluate round
         if(opponentHealth > 0){
+            alert("You dealt "+characterAttack+" damage!");
             //decrease opponents health by characters attack points
             opponentHealth = opponentHealth - characterAttack;
             //decrease characters health by opponents count-attack-points
