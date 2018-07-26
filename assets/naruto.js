@@ -15,47 +15,9 @@ $(document).ready(function(){
                        " your opponents wisely because your chakra will not regenerate. With each attack, your confidence and" +
                        " ability will grow making each subsequent attack stronger than the previous one. Mouse over each character to learn their strengths"+
                        " and when ready, click your choice to begin.",
-        start: function(){
-            //clear the banner div and replace with game instructions
-
-            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
-                $("#user-info-body, #user-info-header").fadeIn(2000);
-            });
-
-            //empty the banner completely after 1 seconds
-            setTimeout(function(){
-                $("#user-info-header, #user-info-body").empty();
-            }, 1000);
-
-            //replace info section with instructions header and game instructions
-            setTimeout(function(){
-                $("#user-info-header").text("INSTRUCTIONS");
-                $("#user-info-body").text(gameVariables.instructions);
-            }, 2000);
-
-            //show all the characters available to choose from
-            gameVariables.show_characters();
-
-        },
-        show_characters: function(){
-            //supposed to flash gold on background of character div then fade and switch back to black as it comes
-            //back in to focus but the flash part isn't working yet
-            // $("#characters").css("background-color", "yellow");
-            $("#characters").fadeOut("fast");
-            $("#characters").fadeIn(2500);
-            setTimeout(function(){
-                $("#characters").css("background-color", "black");
-                character_object = gameVariables.characters;
-                for(i=0;i<character_object.length;i++){
-                    html = "<div class='col-md'><img src='"+character_object[i].profile_pic+"' class='character-image' data-name='"+
-                        character_object[i].name+"'></div>";
-                    $("#characters").append(html);
-                }
-            }, 500);
-        },
         hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
         characters: [
-             {
+            {
                 name: "Naruto Uzamaki",
                 profile_pic: "assets/images/naruto_ready.jpeg",
                 combat_pic: "assets/images/naruto_combat.jpg",
@@ -99,7 +61,7 @@ $(document).ready(function(){
                 // lose_pic:
                 saying: "What a drag..",
             },
-             {
+            {
                 name: "Neji Hyuga",
                 profile_pic: "assets/images/neji_ready.jpg",
                 combat_pic: "assets/images/neji_combat.jpg",
@@ -109,10 +71,28 @@ $(document).ready(function(){
                 win_pic: "assets/images/neji_ready.jpg",
                 // lose_pic:
                 saying: "I have no choice but to fulfill my destiny.",
-             }
+            }
         ],
-        //use this function to find data on a particular character by "data-name"
+        fadeOutInInfo: function(header, body){
+            //use to quickly do a fadeOut/FadeIn of banner with info change
+            //make sure to pass header and body in a way that are usable by the .text()
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
+            //empty the banner completely after 1 seconds
+            setTimeout(function(){
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
+
+            //replace info section with instructions header and game instructions
+            setTimeout(function(){
+                $("#user-info-header").text(header);
+                $("#user-info-body").text(body);
+            }, 2000);
+        },
         getCharacter: function(value){
+            //use this function to find data on a particular character by "data-name"
             character= "boo";
             for(i=0; i<gameVariables.characters.length; i++){
                 if(value == gameVariables.characters[i].name){
@@ -120,6 +100,48 @@ $(document).ready(function(){
                 }
             }
             return character;
+        },
+        judgeRound: function(){
+            myFighter = gameVariables.getCharacter(gameVariables.character);
+            myOpponent= gameVariables.getCharacter(gameVariables.opponent);
+
+            //get the fighting statistics of each player
+            if(gameVariables.round == 1){
+
+                fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
+                fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
+                $('#actions').append(fightPanel2, fightPanel);
+                for(i=0;i<gameVariables.stats.length;i++){
+                    mystat = myFighter[gameVariables.stats[i]];
+                    html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
+                    $('#characterStats').append(html1);
+
+                    opponentstat = myOpponent[gameVariables.stats[i]];
+                    html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
+                    $('#opponentStats').append(html2);
+
+                }
+
+            }
+            //assign those to variables for this round only
+            //create 2 small divs with a button to attack, and the 3 statistics for each fighter
+            //append those divs to #character and #opponent
+        },
+        showCharacters: function(){
+            //supposed to flash gold on background of character div then fade and switch back to black as it comes
+            //back in to focus but the flash part isn't working yet
+            // $("#characters").css("background-color", "yellow");
+            $("#characters").fadeOut("fast");
+            $("#characters").fadeIn(2500);
+            setTimeout(function(){
+                $("#characters").css("background-color", "black");
+                character_object = gameVariables.characters;
+                for(i=0;i<character_object.length;i++){
+                    html = "<div class='col-md'><img src='"+character_object[i].profile_pic+"' class='character-image' data-name='"+
+                        character_object[i].name+"'></div>";
+                    $("#characters").append(html);
+                }
+            }, 500);
         },
         selectOpponent: function(character){
             html = "<h2>SELECT YOUR OPPONENT FOR ROUND "+gameVariables.round+"!</h2>";
@@ -143,6 +165,28 @@ $(document).ready(function(){
             gameVariables.ready2fight = true;
 
         },
+        start: function(){
+            //clear the banner div and replace with game instructions
+
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
+            //empty the banner completely after 1 seconds
+            setTimeout(function(){
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
+
+            //replace info section with instructions header and game instructions
+            setTimeout(function(){
+                $("#user-info-header").text("INSTRUCTIONS");
+                $("#user-info-body").text(gameVariables.instructions);
+            }, 2000);
+
+            //show all the characters available to choose from
+            gameVariables.showCharacters();
+
+        },
         startRound: function(){
             //change background to arena field 
             // $('body').css('background-image', 'url(/images/arena_field_grass.jpg)');
@@ -162,52 +206,10 @@ $(document).ready(function(){
                 $("#user-info-body").html("<h3>"+gameVariables.character+" VS "+gameVariables.opponent+"</h3>");
             }, 2000);
 
+            //call judgeRound to determine hits and winner
             gameVariables.judgeRound();
 
         },
-        judgeRound: function(){
-            myFighter = gameVariables.getCharacter(gameVariables.character);
-            myOpponent= gameVariables.getCharacter(gameVariables.opponent);
-    
-                //get the fighting statistics of each player
-                if(gameVariables.round == 1){
-                    
-                    fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
-                    fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
-                    $('#actions').append(fightPanel2, fightPanel);
-                    for(i=0;i<gameVariables.stats.length;i++){
-                        mystat = myFighter[gameVariables.stats[i]];
-                        html1 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+mystat+"</p><br>";
-                        $('#characterStats').append(html1);
-
-                        opponentstat = myOpponent[gameVariables.stats[i]];
-                        html2 = "<p style='background: white; margin-top: 5px;'>"+gameVariables.stats[i]+": "+opponentstat+"</p><br>";
-                        $('#opponentStats').append(html2);
-
-                    }
-                    
-                }
-                //assign those to variables for this round only
-                //create 2 small divs with a button to attack, and the 3 statistics for each fighter
-                //append those divs to #character and #opponent
-        },
-        fadeOutInInfo: function(header, body){
-            //make sure to pass header and body in a way that are usuable by the .text()
-            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
-                $("#user-info-body, #user-info-header").fadeIn(2000);
-            });
-
-            //empty the banner completely after 1 seconds
-            setTimeout(function(){
-                $("#user-info-header, #user-info-body").empty();
-            }, 1000);
-
-            //replace info section with instructions header and game instructions
-            setTimeout(function(){
-                $("#user-info-header").text(header);
-                $("#user-info-body").text(body);
-            }, 2000);
-        }
     };
 
     //start of events outside of gameVariables 
