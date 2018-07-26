@@ -64,7 +64,7 @@ $(document).ready(function(){
         opponent: null,
         opponents: [],
         opponentStats: null,
-        rate: 2,
+        rate: 1.5,
         ready2fight: false,
         round: 1,
         stats : ["chakra", "attack_power", "counter_attack_power"],
@@ -75,18 +75,21 @@ $(document).ready(function(){
                        " ability will grow making each subsequent attack stronger than the previous one. Mouse over each character to learn their strengths"+
                        " and when ready, click your choice to begin.",
         hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
-        checkHealth: function(characterHealth, opponentHealth){
+        checkHealth: function(character, opponent, characterHealth, opponentHealth){
           if (characterHealth > 0 && opponentHealth > 0) {
               //refresh character stats
-              gameVariables.updateGameStats();
+              gameVariables.updateGameStats(character, opponent);
           } else if (characterHealth > 0 && opponentHealth <= 0 ) {
+              gameVariables.updateGameStats(character, opponent);
               alert("YOU WIN THE ROUND! Click ok to continue");
               gameVariables.endRound();
           } else {
+              gameVariables.updateGameStats(character, opponent);
               alert("You failed the Chunin Exam!");
               replay = confirm("Would you like to play again?");
               if(replay === true){
                   //restart game
+                  gameVariables.resetStage();
                   gameVariables.start();
               }
           }
@@ -155,6 +158,17 @@ $(document).ready(function(){
             //create 2 small divs with a button to attack, and the 3 statistics for each fighter
             //append those divs to #character and #opponent
         },
+        resetStage: function(){
+            gameVariables.character = null;
+            gameVariables.characterStats = null;
+            gameVariables.gameStarted = false;
+            gameVariables.fighting = false;
+            gameVariables.opponent = null;
+            gameVariables.opponents = [];
+            gameVariables.opponentStats = null;
+            gameVariables.ready2fight = false;
+            $("#user-info-header, #user-info-body, #characters, .arena-div").empty();
+            },
         showCharacters: function(){
             //supposed to flash gold on background of character div then fade and switch back to black as it comes
             //back in to focus but the flash part isn't working yet
@@ -239,6 +253,9 @@ $(document).ready(function(){
 
         },
         updateGameStats: function(myFighter, myOpponent){
+            if(gameVariables.fighting){
+                $('#actions').empty();
+            }
             fightPanel = "<div class='row' style='margin-top: 25px;'><div class='col'><button class='btn btn-warning btn-block' id='attack'>ATTACK</button></div></div>";
             fightPanel2 = "<div class='row' id='stats'><div class='col' id='characterStats'></div><div class='col' id='opponentStats'></div></div>";
             $('#actions').append(fightPanel2, fightPanel);
@@ -399,22 +416,29 @@ $(document).ready(function(){
     });
 
     $(document).on("click", "#attack", function(){
-        characterHealth = gameVariables.characterStats.chakra;
-        opponentHealth = gameVariables.opponentStats.chakra;
-        characterAttack = gameVariables.characterStats.attack_power;
-        opponentCounterAttack = gameVariables.opponentStats.counter_attack_power;
+        character = gameVariables.characterStats;
+        opponent = gameVariables.opponentStats;
+        characterHealth = character.chakra;
+        opponentHealth = opponent.chakra;
+        characterAttack = character.attack_power;
+        opponentCounterAttack = opponent.counter_attack_power;
 
         //check to make sure opponent has not died, and if not, calculate new stats and evaluate round
         if(opponentHealth > 0){
             alert("You dealt "+characterAttack+" damage!");
             //decrease opponents health by characters attack points
-            opponentHealth = opponentHealth - characterAttack;
+            opponentHealth -= characterAttack;
+            gameVariables.opponentStats.chakra = opponentHealth;
+
             //decrease characters health by opponents count-attack-points
-            characterHealth = characterHealth - opponentCounterAttack;
+            characterHealth -= opponentCounterAttack;
+            gameVariables.characterStats.chakra = characterHealth;
+
             //increase characters attack points by rate
             characterAttack = characterAttack * gameVariables.rate;
+            gameVariables.characterStats.attack_power = characterAttack;
             //call checkHealth function
-            gameVariables.checkHealth(characterHealth, opponentHealth)
+            gameVariables.checkHealth(character, opponent, characterHealth, opponentHealth)
         } else {
             return false;
         }
