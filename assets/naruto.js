@@ -396,13 +396,17 @@ $(document).ready(function(){
     $(document).on("click", "#attack", function(){
         characterHealth = gameVariables.characterStats.chakra;
         opponentHealth = gameVariables.opponentStats.chakra;
+        characterAttack = gameVariables.characterStats.attack_power;
+        opponentCounterAttack = gameVariables.opponentStats.counter_attack_power;
+
+        //check to make sure opponent has not died, and if not, calculate new stats and evaluate round
         if(opponentHealth > 0){
             //decrease opponents health by characters attack points
-
+            opponentHealth = opponentHealth - characterAttack;
             //decrease characters health by opponents count-attack-points
-
+            characterHealth = characterHealth - opponentCounterAttack;
             //increase characters attack points by rate
-
+            characterAttack = characterAttack * gameVariables.rate;
             //call checkHealth function
             gameVariables.checkHealth(characterHealth, opponentHealth)
         } else {
