@@ -17,25 +17,25 @@ $(document).ready(function(){
                        " and when ready, click your choice to begin.",
         start: function(){
             //clear the banner div and replace with game instructions
-            info = $("#user-info");
-            info_header = $("#user-info-header");
-            info_body = $("#user-info-body");
-            //start to fad out the banner over 1.5 seconds
-            info.fadeOut(1500);
-            //empty the banner completely after 1.5 seconds
+
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
+            //empty the banner completely after 1 seconds
             setTimeout(function(){
-                info_header.empty();
-                info_body.empty();
-                }, 1500);
-            //start to to fade back in banner to show new instructions
-            info.fadeIn(2500);
-            //banner should be faded out by now and fire code to fade back in banner a
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
+
+            //replace info section with instructions header and game instructions
             setTimeout(function(){
-                info_header.text("INSTRUCTIONS");
-                info_body.text(gameVariables.instructions)
-                }, 2000);
+                $("#user-info-header").text("INSTRUCTIONS");
+                $("#user-info-body").text(gameVariables.instructions);
+            }, 2000);
+
             //show all the characters available to choose from
             gameVariables.show_characters();
+
         },
         show_characters: function(){
             //supposed to flash gold on background of character div then fade and switch back to black as it comes
@@ -123,42 +123,43 @@ $(document).ready(function(){
         },
         selectOpponent: function(character){
             html = "<h2>SELECT YOUR OPPONENT FOR ROUND "+gameVariables.round+"!</h2>";
-            
-            $("#user-info-body").fadeOut(1500);
-            //empty the banner completely after 1.5 seconds
+
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
+            //empty the banner completely after 1 seconds
             setTimeout(function(){
-                $("#user-info-header").empty();
-                $("#user-info-body").empty();
-            }, 1500);
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
 
-            $("#user-info-body").fadeIn(2500);
-            $("#user-info-header").fadeIn(2500);
-
+            //replace info section with instructions header and game instructions
             setTimeout(function(){
                 $("#user-info-header").text(character.toUpperCase());
                 $("#user-info-body").html(html);
             }, 2000);
+
+            //change state to ready2fight true
             gameVariables.ready2fight = true;
+
         },
         startRound: function(){
             //change background to arena field 
-            // $('body').css('background-image', 'url("images/arena_field_grass.jpg")');
-            // body.style.backgroundImage = 'url(images/arena_field_grass.jpg';
+            // $('body').css('background-image', 'url(/images/arena_field_grass.jpg)');
 
-            $("#user-info-header").fadeOut(1500);
-            $("#user-info-body").fadeOut(1500);
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
             //empty the banner completely after 1.5 seconds
             setTimeout(function(){
-                $("#user-info-header").empty();
-                $("#user-info-body").empty();
-            }, 1500);
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
 
-            $("#user-info-body").fadeIn(2500);
-            $("#user-info-header").fadeIn(2500);
-
+            //replace info section with current round and matchup
             setTimeout(function(){
                 $("#user-info-header").text("ROUND "+gameVariables.round);
-                $("#user-info-body").html("<h3>"+gameVariables.character+" VS "+gameVariables.opponent+"</h3");
+                $("#user-info-body").html("<h3>"+gameVariables.character+" VS "+gameVariables.opponent+"</h3>");
             }, 2000);
 
             gameVariables.judgeRound();
@@ -189,6 +190,23 @@ $(document).ready(function(){
                 //assign those to variables for this round only
                 //create 2 small divs with a button to attack, and the 3 statistics for each fighter
                 //append those divs to #character and #opponent
+        },
+        fadeOutInInfo: function(header, body){
+            //make sure to pass header and body in a way that are usuable by the .text()
+            $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
+                $("#user-info-body, #user-info-header").fadeIn(2000);
+            });
+
+            //empty the banner completely after 1 seconds
+            setTimeout(function(){
+                $("#user-info-header, #user-info-body").empty();
+            }, 1000);
+
+            //replace info section with instructions header and game instructions
+            setTimeout(function(){
+                $("#user-info-header").text(header);
+                $("#user-info-body").text(body);
+            }, 2000);
         }
     };
 
@@ -248,7 +266,7 @@ $(document).ready(function(){
         }
     });
 
-    //onclick that picks character and moves them to arena
+    //onclick that picks characters and moves them to arena
     $(document).on("click", ".character-image", function(){
         if(gameVariables.gameStarted == false) {
             //change game state to true for started
@@ -323,6 +341,7 @@ $(document).ready(function(){
                 
             }
 
+            //call to start the round
             gameVariables.startRound();
 
         }
