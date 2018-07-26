@@ -75,6 +75,22 @@ $(document).ready(function(){
                        " ability will grow making each subsequent attack stronger than the previous one. Mouse over each character to learn their strengths"+
                        " and when ready, click your choice to begin.",
         hint: "Maybe start with a weaker opponent and increase your attack ability fighting them before moving on to a stronger foe?",
+        checkHealth: function(characterHealth, opponentHealth){
+          if (characterHealth > 0 && opponentHealth > 0) {
+              //refresh character stats
+              gameVariables.updateGameStats();
+          } else if (characterHealth > 0 && opponentHealth <= 0 ) {
+              alert("YOU WIN THE ROUND! Click ok to continue");
+              gameVariables.endRound();
+          } else {
+              alert("You failed the Chunin Exam!");
+              replay = confirm("Would you like to play again?");
+              if(replay === true){
+                  //restart game
+                  gameVariables.start();
+              }
+          }
+        },
         fadeOutInInfo: function(header, body){
             //use to quickly do a fadeOut/FadeIn of banner with info change
             //make sure to pass header and body in a way that are usable by the .text()
@@ -92,6 +108,11 @@ $(document).ready(function(){
                 $("#user-info-header").text(header);
                 $("#user-info-body").text(body);
             }, 2000);
+        },
+        endRound: function(){
+            if(gameVariables.round < 4){
+                gameVariables.round++;
+            }
         },
         getCharacter: function(value){
             //use this function to find data on a particular character by "data-name"
@@ -376,7 +397,16 @@ $(document).ready(function(){
         characterHealth = gameVariables.characterStats.chakra;
         opponentHealth = gameVariables.opponentStats.chakra;
         if(opponentHealth > 0){
-            alert("I've hit you!");
+            //decrease opponents health by characters attack points
+
+            //decrease characters health by opponents count-attack-points
+
+            //increase characters attack points by rate
+
+            //call checkHealth function
+            gameVariables.checkHealth(characterHealth, opponentHealth)
+        } else {
+            return false;
         }
     });
 
