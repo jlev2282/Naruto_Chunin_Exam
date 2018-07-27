@@ -119,21 +119,24 @@ $(document).ready(function(){
                 gameVariables.round++;
                 //clear actions and opponents div
                 $('#actions, #opponent').empty();
+
                 opponent = gameVariables.opponent;
                 var opponentArray = gameVariables.opponents
+
                 //remove defeated opponent from opponents and add to defeated array
                 gameVariables.defeated.push(opponent);
-                index = array.indexOf(opponent);
+                index = opponentArray.indexOf(opponent);
                 if (index > -1) {
                 opponentArray.splice(index, 1);
                 }
-                console.log(opponentArray);
-                 //figure out logic to allow next opponent to be clicked and entered into opponent div
 
-                //remember you have the selectOpponent function defined below
+                //allow user to select opponent for next round
+                gameVariables.selectOpponent(gameVariables.character);
 
                 //update banner with round number and versus info
             } else {
+                //clear actions and opponents div
+                $('#actions, #opponent').empty();
                 alert('You win! You have passed the Chunin exam!');
                 replay = confirm("Would you like to play again?");
                 if(replay === true){
