@@ -117,8 +117,13 @@ $(document).ready(function(){
         endRound: function(){
             if(gameVariables.round < 4){
                 gameVariables.round++;
+                //set state of fighting to false
+                gameVariables.fighting = false; 
+
                 //clear actions and opponents div
-                $('#actions, #opponent').empty();
+                $('#opponent, #actions').empty();
+
+                character= gameVariables.character;
 
                 opponent = gameVariables.opponent;
                 var opponentArray = gameVariables.opponents
@@ -130,10 +135,12 @@ $(document).ready(function(){
                 opponentArray.splice(index, 1);
                 }
 
+                gameVariables.opponent = null;
+
                 //allow user to select opponent for next round
                 gameVariables.selectOpponent(gameVariables.character);
 
-                //update banner with round number and versus info
+            
             } else {
                 //clear actions and opponents div
                 $('#actions, #opponent').empty();
@@ -170,16 +177,17 @@ $(document).ready(function(){
             gameVariables.opponentStats = myOpponent;
 
             //get the fighting statistics of each player
-            if(gameVariables.round === 1){
+            
 
                 gameVariables.updateGameStats(myFighter, myOpponent);
 
-            }
+            
             //assign those to variables for this round only
             //create 2 small divs with a button to attack, and the 3 statistics for each fighter
             //append those divs to #character and #opponent
         },
         resetStage: function(){
+            $("#user-info-header, #user-info-body, #characters, .arena-div").empty();
             gameVariables.character = null;
             gameVariables.characterStats = null;
             gameVariables.gameStarted = false;
@@ -189,7 +197,6 @@ $(document).ready(function(){
             gameVariables.opponentStats = null;
             gameVariables.ready2fight = false;
             gameVariables.round = 1;
-            $("#user-info-header, #user-info-body, #characters, .arena-div").empty();
             },
         showCharacters: function(){
             //supposed to flash gold on background of character div then fade and switch back to black as it comes
@@ -208,6 +215,7 @@ $(document).ready(function(){
             }, 500);
         },
         selectOpponent: function(character){
+            //creat html for banner
             html = "<h2>SELECT YOUR OPPONENT FOR ROUND "+gameVariables.round+"!</h2>";
 
             $("#user-info-header, #user-info-body").fadeOut(1500).promise().done(function(){
@@ -316,7 +324,10 @@ $(document).ready(function(){
         }
 
         if(gameVariables.ready2fight === true) {
-            if( currentCharacter == gameVariables.character){
+            //get index of character, if not in opponents, don't allow
+            validOpponent = gameVariables.opponents.indexOf(currentCharacter);
+
+            if( currentCharacter == gameVariables.character || validOpponent === -1){
                 $(this).css("border", "solid");
                 $(this).css("border-color", "red");
             } else if (gameVariables.opponent != null && currentCharacter != gameVariables.character) {
@@ -402,13 +413,16 @@ $(document).ready(function(){
 
         //for when character is chosen and now it's time to pick an opponent
         if(gameVariables.ready2fight == true) {
-            if( currentCharacter == gameVariables.character){
+            //get index of character, if not in opponents, don't allow
+            validOpponent = gameVariables.opponents.indexOf(currentCharacter);
+
+            if( currentCharacter == gameVariables.character || validOpponent === -1){
                 return false;
             } else {
                 if(gameVariables.opponent == null){
                     gameVariables.opponent = this.dataset.name;
 
-                    //get info for selected character and assign to "selected"
+                    //get info for selected opponent and assign to "selected"
                     selectedInfo = gameVariables.getCharacter(this.dataset.name);
 
                     //indicate character has been selected
@@ -432,8 +446,13 @@ $(document).ready(function(){
                 return false;
             }
 
+            opponent = gameVariables.opponent;
+            character = gameVariables.character;
+
+
             //call to start the round
             gameVariables.startRound();
+
 
         }
     });
