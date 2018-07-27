@@ -171,8 +171,11 @@ $(document).ready(function(){
         },
         judgeRound: function(){
             gameVariables.fighting = true;
-            myFighter = gameVariables.getCharacter(gameVariables.character);
-            myOpponent= gameVariables.getCharacter(gameVariables.opponent);
+            Fighter = gameVariables.getCharacter(gameVariables.character);
+            Opponent= gameVariables.getCharacter(gameVariables.opponent);
+
+            myFighter = Object.create(Fighter);
+            myOpponent = Object.create(Opponent);
             gameVariables.characterStats = myFighter;
             gameVariables.opponentStats = myOpponent;
 
