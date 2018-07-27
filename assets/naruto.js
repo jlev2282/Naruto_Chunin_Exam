@@ -8,7 +8,7 @@ $(document).ready(function(){
                 combat_pic: "assets/images/naruto_combat.jpg",
                 chakra: 99,
                 attack_power: 25,
-                counter_attack_power:30,
+                counter_attack_power:25,
                 win_pic: "assets/images/naruto_win.jpg",
                 // lose_pic:
                 saying: "One day I WILL be the Hokage!",
@@ -19,7 +19,7 @@ $(document).ready(function(){
                 combat_pic: "assets/images/sakura_combat2.jpg",
                 chakra: 75,
                 attack_power: 30,
-                counter_attack_power: 20,
+                counter_attack_power: 15,
                 win_pic: "assets/images/sakura_win.jpg",
                 // lose_pic:
                 saying: "CHA!!!",
@@ -30,7 +30,7 @@ $(document).ready(function(){
                 combat_pic: "assets/images/sasuke_profile.jpg",
                 chakra: 80,
                 attack_power: 25,
-                counter_attack_power: 25,
+                counter_attack_power: 20,
                 win_pic: "assets/images/sasuke_win.jpg",
                 // lose_pic:
                 saying: "I'll never acknowledge you.",
@@ -41,7 +41,7 @@ $(document).ready(function(){
                 combat_pic: "assets/images/shikamaru_combat.jpg",
                 chakra: 70,
                 attack_power: 20,
-                counter_attack_power: 15,
+                counter_attack_power: 10,
                 win_pic: "assets/images/shikamaru_win.jpg",
                 // lose_pic:
                 saying: "What a drag..",
@@ -52,13 +52,14 @@ $(document).ready(function(){
                 combat_pic: "assets/images/neji_combat.jpg",
                 chakra:75,
                 attack_power: 20,
-                counter_attack_power: 40,
+                counter_attack_power: 20,
                 win_pic: "assets/images/neji_ready.jpg",
                 // lose_pic:
                 saying: "I have no choice but to fulfill my destiny.",
             }
         ],
         characterStats: null,
+        defeated: [],
         gameStarted: false,
         fighting: false,
         opponent: null,
@@ -83,6 +84,7 @@ $(document).ready(function(){
               gameVariables.updateGameStats(character, opponent);
               alert("YOU WIN THE ROUND! Click ok to continue");
               gameVariables.endRound();
+
           } else {
               gameVariables.updateGameStats(character, opponent);
               alert("You failed the Chunin Exam!");
@@ -116,13 +118,29 @@ $(document).ready(function(){
             if(gameVariables.round < 4){
                 gameVariables.round++;
                 //clear actions and opponents div
+                $('#actions, #opponent').empty();
+                opponent = gameVariables.opponent;
+                var opponentArray = gameVariables.opponents
+                //remove defeated opponent from opponents and add to defeated array
+                gameVariables.defeated.push(opponent);
+                index = array.indexOf(opponent);
+                if (index > -1) {
+                opponentArray.splice(index, 1);
+                }
+                console.log(opponentArray);
+                 //figure out logic to allow next opponent to be clicked and entered into opponent div
 
-                //remove opponent from opponents array
-
-                //figure out logic to allow next opponent to be clicked and entered into opponent div
                 //remember you have the selectOpponent function defined below
 
                 //update banner with round number and versus info
+            } else {
+                alert('You win! You have passed the Chunin exam!');
+                replay = confirm("Would you like to play again?");
+                if(replay === true){
+                    //restart game
+                    gameVariables.resetStage();
+                    gameVariables.start();
+                }
             }
         },
         isAnOpponent: function(character){
@@ -167,6 +185,7 @@ $(document).ready(function(){
             gameVariables.opponents = [];
             gameVariables.opponentStats = null;
             gameVariables.ready2fight = false;
+            gameVariables.round = 1;
             $("#user-info-header, #user-info-body, #characters, .arena-div").empty();
             },
         showCharacters: function(){
@@ -363,6 +382,7 @@ $(document).ready(function(){
                     gameVariables.opponents.push(gameVariables.characters[i].name);
                 }
             }
+
             //clear arena of any info from mouseovers
             $("#character").css("text-align", "center");
             $("#actions").empty();
@@ -418,8 +438,10 @@ $(document).ready(function(){
     $(document).on("click", "#attack", function(){
         character = gameVariables.characterStats;
         opponent = gameVariables.opponentStats;
+
         characterHealth = character.chakra;
         opponentHealth = opponent.chakra;
+
         characterAttack = character.attack_power;
         opponentCounterAttack = opponent.counter_attack_power;
 
@@ -435,8 +457,9 @@ $(document).ready(function(){
             gameVariables.characterStats.chakra = characterHealth;
 
             //increase characters attack points by rate
-            characterAttack = characterAttack * gameVariables.rate;
+            characterAttack = Math.floor(characterAttack * gameVariables.rate);
             gameVariables.characterStats.attack_power = characterAttack;
+
             //call checkHealth function
             gameVariables.checkHealth(character, opponent, characterHealth, opponentHealth)
         } else {
