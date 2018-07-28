@@ -138,7 +138,7 @@ $(document).ready(function(){
                 gameVariables.opponent = null;
 
                 //allow user to select opponent for next round
-                gameVariables.selectOpponent(gameVariables.character);
+                gameVariables.selectOpponent(character);
 
             
             } else {
@@ -170,24 +170,23 @@ $(document).ready(function(){
             return character;
         },
         judgeRound: function(){
+            //set fighting to true
             gameVariables.fighting = true;
-            Fighter = gameVariables.getCharacter(gameVariables.character);
+            if(gameVariables.round ===1){
+                 Fighter = gameVariables.getCharacter(gameVariables.character);
+            } else {
+                Fighter = gameVariables.characterStats;
+            }
             Opponent= gameVariables.getCharacter(gameVariables.opponent);
 
             myFighter = Object.create(Fighter);
             myOpponent = Object.create(Opponent);
+
             gameVariables.characterStats = myFighter;
             gameVariables.opponentStats = myOpponent;
 
-            //get the fighting statistics of each player
-            
+            gameVariables.updateGameStats(Fighter, Opponent);
 
-                gameVariables.updateGameStats(myFighter, myOpponent);
-
-            
-            //assign those to variables for this round only
-            //create 2 small divs with a button to attack, and the 3 statistics for each fighter
-            //append those divs to #character and #opponent
         },
         resetStage: function(){
             $("#user-info-header, #user-info-body, #characters, .arena-div").empty();
