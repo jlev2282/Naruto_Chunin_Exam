@@ -8,7 +8,7 @@ $(document).ready(function(){
                 combat_pic: "assets/images/naruto_combat.jpg",
                 chakra: 99,
                 attack_power: 25,
-                counter_attack_power:25,
+                counter_attack_power:20,
                 win_pic: "assets/images/naruto_win.jpg",
                 // lose_pic:
                 saying: "One day I WILL be the Hokage!",
@@ -17,7 +17,7 @@ $(document).ready(function(){
                 name: "Sakura Haruno",
                 profile_pic: "assets/images/sakura_ready.jpeg",
                 combat_pic: "assets/images/sakura_combat2.jpg",
-                chakra: 75,
+                chakra: 85,
                 attack_power: 30,
                 counter_attack_power: 15,
                 win_pic: "assets/images/sakura_win.jpg",
@@ -28,9 +28,9 @@ $(document).ready(function(){
                 name: "Sasuke Uchiha",
                 profile_pic: "assets/images/sasuke_ready.jpeg",
                 combat_pic: "assets/images/sasuke_profile.jpg",
-                chakra: 80,
+                chakra: 90,
                 attack_power: 25,
-                counter_attack_power: 20,
+                counter_attack_power: 15,
                 win_pic: "assets/images/sasuke_win.jpg",
                 // lose_pic:
                 saying: "I'll never acknowledge you.",
@@ -39,7 +39,7 @@ $(document).ready(function(){
                 name: "Shikamaru Nara",
                 profile_pic: "assets/images/shikamaru_ready.png",
                 combat_pic: "assets/images/shikamaru_combat.jpg",
-                chakra: 70,
+                chakra: 80,
                 attack_power: 20,
                 counter_attack_power: 10,
                 win_pic: "assets/images/shikamaru_win.jpg",
@@ -50,9 +50,9 @@ $(document).ready(function(){
                 name: "Neji Hyuga",
                 profile_pic: "assets/images/neji_ready.jpg",
                 combat_pic: "assets/images/neji_combat.jpg",
-                chakra:75,
+                chakra:80,
                 attack_power: 20,
-                counter_attack_power: 20,
+                counter_attack_power: 10,
                 win_pic: "assets/images/neji_ready.jpg",
                 // lose_pic:
                 saying: "I have no choice but to fulfill my destiny.",
@@ -65,7 +65,7 @@ $(document).ready(function(){
         opponent: null,
         opponents: [],
         opponentStats: null,
-        rate: 1.5,
+        rate: 1.25,
         ready2fight: false,
         round: 1,
         stats : ["chakra", "attack_power", "counter_attack_power"],
@@ -81,6 +81,7 @@ $(document).ready(function(){
               //refresh character stats
               gameVariables.updateGameStats(character, opponent);
           } else if (characterHealth > 0 && opponentHealth <= 0 ) {
+            //   gameVariables.opponentStats.chakra = 0;
               gameVariables.updateGameStats(character, opponent);
               alert("YOU WIN THE ROUND! Click ok to continue");
               gameVariables.endRound();
