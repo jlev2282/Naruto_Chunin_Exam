@@ -1,3 +1,10 @@
+body {
+    font-family: 'Permanent Marker', cursive;
+}
+
+#user-info  h1 {
+    margin-bottom: -10px;
+}
 .character-image {
     max-width: 5vw;
     min-height: 100%;
